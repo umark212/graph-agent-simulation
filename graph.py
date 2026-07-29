@@ -84,6 +84,14 @@ def build_small_graph_world():
     for name in ["v1", "v2", "v3", "v4", "v5", "v6", "v7"]:
         graph.add_node(name)
 
-    
+    #add edges based on the paper figure
+    graph.add_edge("v1", "v2")
+    graph.add_edge("v2", "v3")
+    graph.add_edge("v3", "v4")
+    graph.add_edge("v4", "v5")
+    graph.add_edge("v3", "v6")
+    graph.add_edge("v4", "v7")
+    graph.add_edge("v6", "v7")
+
 
     return graph

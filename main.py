@@ -1,6 +1,7 @@
 import random
 random.seed(00000000)
 from graph import build_small_graph_world
+from metrics import GraphMetrics
 
 __name__ = "__main__"
 #Task 1: WORLD design
@@ -11,81 +12,6 @@ __name__ = "__main__"
 
 #Task 2: WORLD metrics
 
-class GraphMetrics:
-    def __init__(self, graph):
-        #stores the graph for metric calculations
-        self.graph = graph
-
-    def shortest_path(self, start_name, goal_name):
-        #uses bfs to find one shortest path between 2 nodes
-        queue = [(start_name, [start_name])]
-        visited = []
-
-        while queue:
-            current_name, path = queue.pop(0)
-
-            if current_name == goal_name:
-                return path
-
-            if current_name not in visited:
-                visited.append(current_name)
-
-                current_node = self.graph.get_node(current_name)
-                for neighbour in current_node.get_neighbours():
-                    if neighbour.get_name() not in visited:
-                        queue.append((neighbour.get_name(), path + [neighbour.get_name()]))
-
-        return None
-
-    
-
-    def degree_centrality(self):
-        #degree centrality is number of connected neighbours
-        result = {}
-
-        for node in self.graph.get_all_nodes():
-            result[node.get_name()] = len(node.get_neighbours())
-
-        return result
-
-    def closeness_centrality(self):
-        #closeness centrality is 1 / sum of shortest path distances
-        result = {}
-
-        for node in self.graph.get_all_nodes():
-            total_distance = 0
-
-            for other_node in self.graph.get_all_nodes():
-                if node.get_name() != other_node.get_name():
-                    path = self.shortest_path(node.get_name(), other_node.get_name())
-                    total_distance += len(path) - 1
-
-            result[node.get_name()] = 1 / total_distance
-
-        return result
-
-    def betweenness_centrality(self):
-        #betweenness centrality is the number of shortest paths passing through a node
-        result = {}
-
-        for node in self.graph.get_all_nodes():
-            result[node.get_name()] = 0
-
-        node_names = [node.get_name() for node in self.graph.get_all_nodes()]
-
-        for i in range(len(node_names)):
-            for j in range(i + 1, len(node_names)):
-                start = node_names[i]
-                goal = node_names[j]
-
-                path = self.shortest_path(start, goal)
-
-                if path:
-                    for node_name in path[1:-1]:
-                        result[node_name] += 1
-
-        return result
-    
 
 
 #Task 3: Agent design
@@ -197,7 +123,12 @@ def run_simulations(graph):
         agent.set_start_and_target(start_name, target_name)
         path = agent.run_shortest_path_walk()
 
-        shortest_results.append(len(path))
+        if path is not None:
+            shortest_results.append(len(path))
+        else:
+            #handle disconnected pairs by appending a 0 or ignoring them
+            pass
+
 
     return random_results, shortest_results
 
