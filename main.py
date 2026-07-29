@@ -6,29 +6,8 @@ from agent import Agent
 from simulation import run_simulations
 
 __name__ = "__main__"
-#Task 1: WORLD design
 
-
-
-
-
-#Task 2: WORLD metrics
-
-
-
-#Task 3: Agent design
-
-
-    
-    
-#Task 4: Simulation
-
-
-
-
-
-if __name__ == "__main__":
-   
+def main():
     #task 1 test
     graph = build_small_graph_world()
 
@@ -70,3 +49,9 @@ if __name__ == "__main__":
 
     print("\nRandom walk average visited nodes:", sum(random_results) / len(random_results))
     print("Shortest path average visited nodes:", sum(shortest_results) / len(shortest_results))
+
+
+
+if __name__ == "__main__":
+   main()
+    
